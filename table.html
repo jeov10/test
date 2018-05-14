@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>test</title>
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
+  </head>
+  <body>
+    <input type="text" id="amount" value="500">
+        <input type="text" id="TIO" value="13.5">
+        <input type="button" name="" value="Simular" onclick="solve()">
+        <table>
+          <tr>
+            <th>Plazo</th>
+            <th>Ganancia</th>
+          </tr>
+          <tr>
+            <td>6 Meses</td>
+            <td><p id="m6"></p></td>
+          </tr>
+        </table>
+        <script>
+
+          function solve() {
+            const amount = Number(document.getElementById("amount").value)
+            const TIO = Number(document.getElementById("TIO").value)
+            let sixM = amount * (6/12) * (TIO/100)
+            document.getElementById("m6").innerHTML = sixM
+          }
+        </script>
+  </body>
+</html>
