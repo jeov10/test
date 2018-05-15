@@ -6,19 +6,25 @@
     <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
   </head>
   <body>
-    <div style="width: 100%;display:  flex;justify-content:  space-around;">
-      <input type="text" id="amount" value="500" style="width: 30%;">
-      <input type="text" id="TIO" value="13.5" style="width: 30%;">
-      <input type="button" name="" value="Simular" onclick="solve()" style="width: 30%;">
-    </div>
-
-    <table id='test'>
-      <tr>
-        <th>Plazo</th>
-        <th>Ganancia</th>
-      </tr>
-
-    </table>
+    <div style="display:  flex; justify-content:  center;">
+      <div style="display:  flex; flex-direction:  column; width: 400px;">
+        <div style="width: 100%;">
+          <h4>Monto a prestar</h4>
+          <input type="text" id="amount" value="500" style="width: 100%;font-size: 24px;text-align: center;">
+          <h4>Tasa de interés</h4>
+          <input type="text" id="TIO" value="13.5" style="width: 100%;font-size: 24px;text-align: center;">
+          <input type="button" name="" value="Simular" onclick="solve()" style="margin-top: 32px; width: 100%; font-size: 24px;text-align: center;">
+        </div>
+        <h4>
+        <table id='test' style="text-align: right; width: 100%; margin-top: 32px">
+          <tr>
+            <th>Plazo</th>
+            <th>Ganancia</th>
+          </tr>
+        </table>
+      </h4>
+      </div>
+      </div>
     <script>
       function solve() {
         const amount = Number(document.getElementById("amount").value)
@@ -30,7 +36,8 @@
           var h1 = $('<td/>')
           h1.html( i + ' meses')
           var h2 = $('<td/>')
-          h2.html(amount * (i/12) * (TIO/100))
+          let gain = amount * (i/12) * (TIO/100)
+          h2.html(gain.toLocaleString())
           btn.append(h1)
           btn.append(h2)
           $('#test').append(btn);
