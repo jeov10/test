@@ -57,6 +57,6 @@ for (let i = 6; i <= 48; i++) {
   mensualidad = interes + abonoCapital + platformCommission + ivaInt + ivaCommission
   i+5
   if(i%6 == 0) {
-    console.log('A '+ i + 'meses: ' + mensualidad.toFixed())
+    console.log('A '+ i + ' meses: ' + mensualidad.toFixed() + ' ' + platformCommission*i)
   }
 }

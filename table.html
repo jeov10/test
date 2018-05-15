@@ -9,33 +9,16 @@
     <div style="display: flex; justify-content: center;">
       <div style="display: flex; flex-direction: column; width: 400px;">
         <div style="width: 100%;">
-          <h4>Monto a prestar</h4>
-          <input type="text" id="amount" value="500" style="width: 100%;font-size: 24px;text-align: center;">
+          <h4>Monto deseado</h4>
+          <input type="text" id="amount" value="5000" style="width: 100%;font-size: 24px;text-align: center;">
           <h4>Tasa de interés</h4>
           <input type="text" id="TIO" value="13.5" style="width: 100%;font-size: 24px;text-align: center;">
-          <input type="button" name="" value="Simular" onclick="solve()" style="margin-top: 32px; width: 100%; font-size: 24px;text-align: center;">
+          <input id="button"type="button" name="" value="Simular" onclick="solve()" style="margin-top: 32px; width: 100%; font-size: 24px;text-align: center;">
         </div>
-        <h4>
-        <table id='test' style="text-align: right; width: 100%; margin-top: 32px">
-          <tr>
-            <th>Plazo</th>
-            <th>Ganancia</th>
-          </tr>
-        </table>
-      </h4>
       </div>
-      </div>
+    </div>
     <div>
-      <table>
-        <tr>
-          <th>Meses</th>
-          <th>Pago Mensual</th>
-          <th>Comisión de Apertura</th>
-          <th>Monto Neto Depositado</th>
-          <th>Total Pagado</th>
-          <th>Intereses Pagados</th>
-          <th>CAT</th>
-        </tr>
+      <table id='test' style="text-align: right; margin-top: 32px">
       </table>
     </div>
     <script type="text/javascript">
@@ -65,59 +48,67 @@
 
         return pmt;
       }
-
-      const lending = 5000//Number(document.getElementById("amount").value) //MONTO DEL PRESTAMO
-      const TIO = 13.5/100//Number(document.getElementById("TIO").value) //TASA DE INT ORDINARIO
-    //const month = fields.approvedCredit.term //PLAZO
-      const TIVA = 0.16 //TASA IVA
-      const commission = 0.001 //COMISIÓN PLATAFORMO
-      //DATOS INICIALES CALCULADOS
-      const TIIVA = TIO * (1 + TIVA) //tasa de int con IVA
-      const TIM = TIO/12 //Tasa de interes mensual
-      const TIMIVA = TIIVA/12//Tasa de interes mensual con IVA
-      const commissionIVA = commission * 1.16// IVA COMISION
-      //const cuotaMensual = -PMT(TIMIVA, month, lending)
-
-      let saldo = 0
-      let interes = 0
-      let ivaInt = 0
-      let abonoCapital = 0
-      let saldoInicial = lending
-      let mensualidad = 0
-
-      for (let i = 6; i <= 48; i++) {
-        const cuotaMensual = -PMT(TIMIVA, i, lending)
-        saldoInicial = saldoInicial - abonoCapital
-        saldo = Math.round(saldoInicial)
-        interes = Math.round(saldo) * TIM.toFixed(5)
-        ivaInt = Math.round(interes) * 0.16
-        abonoCapital = cuotaMensual - interes - ivaInt
-        let platformCommission = lending * commission
-        let ivaCommission = platformCommission * 0.16
-        let saldoFinal = saldo - Math.round(abonoCapital)
-        mensualidad = interes + abonoCapital + platformCommission + ivaInt + ivaCommission
-        i+5
-        console.log('mensualidad '+mesualidad)
-      }
-
-    </script>
-    <script>
       function solve() {
-        const amount = Number(document.getElementById("amount").value)
-        const TIO = Number(document.getElementById("TIO").value)
-        let i = 6
 
-        for(i; i <= 48; i++) {
-          var btn = $("<tr/>");
-          var h1 = $('<td/>')
-          h1.html( i + ' meses')
-          var h2 = $('<td/>')
-          let gain = amount * (i/12) * (TIO/100)
-          h2.html(gain.toLocaleString())
-          btn.append(h1)
-          btn.append(h2)
-          $('#test').append(btn);
-          i+=5
+        $('#test').html('<tr><th>Meses</th><th>Pago Mensual</th><th>Comisión de Apertura</th><th>Monto Neto Depositado</th><th>Total Pagado</th><th>Intereses Pagados</th><th>CAT</th></tr>')
+        const lending = Number(document.getElementById("amount").value)//Number(document.getElementById("amount").value) //MONTO DEL PRESTAMO
+        const TIO = (Number(document.getElementById("TIO").value))/100//Number(document.getElementById("TIO").value) //TASA DE INT ORDINARIO
+        const TIVA = 0.16 //TASA IVA
+        const commission = 0.001 //COMISIÓN PLATAFORMO
+        //DATOS INICIALES CALCULADOS
+        const TIIVA = TIO * (1 + TIVA) //tasa de int con IVA
+        const TIM = TIO/12 //Tasa de interes mensual
+        const TIMIVA = TIIVA/12//Tasa de interes mensual con IVA
+        const commissionIVA = commission * 1.16// IVA COMISION
+
+        let saldo = 0
+        let interes = 0
+        let ivaInt = 0
+        let abonoCapital = 0
+        let saldoInicial = lending
+        let mensualidad = 0
+
+        for (let i = 6; i <= 48; i++) {
+          const cuotaMensual = -PMT(TIMIVA, i, lending)
+          saldoInicial = saldoInicial - abonoCapital
+          saldo = Math.round(saldoInicial)
+          interes = Math.round(saldo) * TIM.toFixed(5)
+          ivaInt = Math.round(interes) * 0.16
+          abonoCapital = cuotaMensual - interes - ivaInt
+          let platformCommission = lending * commission
+          let ivaCommission = platformCommission * 0.16
+          let saldoFinal = saldo - Math.round(abonoCapital)
+          mensualidad = interes + abonoCapital + platformCommission + ivaInt + ivaCommission
+
+          if(i%6 == 0) {
+            const btn = $('<tr/>');
+            const h1 = $('<td/>')
+            h1.html(i)
+            const h2 = $('<td/>')
+            const h3 = $('<td/>')
+            const h4 = $('<td/>')
+            const h5 = $('<td/>')
+            const h6 = $('<td/>')
+            const h7 = $('<td/>')
+            h2.html(mensualidad.toLocaleString(undefined, {maximumFractionDigits: 0}))
+            let comisionApertura = platformCommission*i
+            h3.html(comisionApertura.toLocaleString()) //pendiente
+            let montoNeto = lending-platformCommission*i
+            h4.html(montoNeto.toLocaleString())
+            let totalPagado = mensualidad.toFixed()*i
+            h5.html(totalPagado.toLocaleString())
+            let interesPagado = totalPagado - lending
+            h6.html(interesPagado.toLocaleString())
+            h7.html('?')
+            btn.append(h1)
+            btn.append(h2)
+            btn.append(h3)
+            btn.append(h4)
+            btn.append(h5)
+            btn.append(h6)
+            btn.append(h7)
+            $('#test').append(btn);
+          }
         }
       }
     </script>
