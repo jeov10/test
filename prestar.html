@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>test</title>
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
+  </head>
+  <body>
+    <div style="display:  flex; justify-content:  center;">
+      <div style="display:  flex; flex-direction:  column; width: 400px;">
+        <div style="width: 100%;">
+          <h4>Monto a prestar</h4>
+          <input type="text" id="amount" value="500" style="width: 100%;font-size: 24px;text-align: center;">
+          <input type="button" name="" value="Simular" onclick="solve()" style="margin-top: 32px; width: 100%; font-size: 24px;text-align: center;">
+          <p>Tasa anual promedio de 13.5%</p>
+          <p>Ganancia mensual promedio: <span id="gananciaM"></span></p>
+        </div>
+        <h4>
+          <table id='test' style="text-align: right; width: 100%; margin-top: 32px">
+          </table>
+        </h4>
+      </div>
+    </div>
+    <script>
+      function solve() {
+        let amount = Number(document.getElementById("amount").value)
+        const TIO = 13.5
+        let i = 6
+        let gananciaMensual = amount*(TIO/100)*(1/12)
+        $('#gananciaM').html(gananciaMensual.toLocaleString(undefined, {maximumFractionDigits: 2}))
+        $('#test').html('<tr><th>Plazo</th><th>Ganancia</th><th>Acumulado</th></tr>')
+        for(i; i <= 48; i++) {
+          var btn = $("<tr/>");
+          var h1 = $('<td/>')
+          h1.html( i + ' meses')
+          var h2 = $('<td/>')
+          let gain = amount * (i/12) * (TIO/100)
+          h2.html(gain.toLocaleString())
+          btn.append(h1)
+          btn.append(h2)
+          var h3 = $('<td/>')
+          amount = gain + amount
+          h3.html(amount.toLocaleString(undefined, {maximumFractionDigits: 2}))
+          btn.append(h3)
+          $('#test').append(btn);
+          i+=5
+        }
+      }
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous">
+    </script>
+  </body>
+</html>
