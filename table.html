@@ -9,10 +9,20 @@
     <div style="display: flex; justify-content: center;">
       <div style="display: flex; flex-direction: column; width: 400px;">
         <div style="width: 100%;">
-          <h4>Monto deseado</h4>
-          <input type="text" id="amount" value="5000" style="width: 100%;font-size: 24px;text-align: center;">
-          <h4>Tasa de interés</h4>
-          <input type="text" id="TIO" value="13.5" style="width: 100%;font-size: 24px;text-align: center;">
+          <input type="range" min="5000" max="250000" step="1000" id="amount" value="5000" style="width: 100%;font-size: 24px;text-align: center;" onchange="updateTextInput(this.value);">
+          <div style="display: flex;">
+            <h4 style="width: 50%; margin: 0;">Monto deseado</h4>
+            <h4 style="width: 50%; margin: 0;">
+              <output type="text" id="textInput" value="">5000</output>
+            </h4>
+          </div>
+          <input type="range" min="8.9" max="28.9" step="0.2" id="TIO" value="13.5" style="width: 100%;font-size: 24px;text-align: center;" onchange="updateTextInputTasa(this.value);">
+          <div style="display: flex;">
+              <h4 style="width: 50%; margin: 0;">Tasa de interés</h4>
+              <h4 style="width: 50%; margin: 0;">
+                <output type="text" id="textInputTasa" value="">13.5</output>
+              </h4>
+          </div>
           <input id="button"type="button" name="" value="Simular" onclick="solve()" style="margin-top: 32px; width: 100%; font-size: 24px;text-align: center;">
         </div>
       </div>
@@ -22,6 +32,13 @@
       </table>
     </div>
     <script type="text/javascript">
+      function updateTextInput(val) {
+          document.getElementById('textInput').value=val;
+        }
+      function updateTextInputTasa(val) {
+          document.getElementById('textInputTasa').value=val;
+        }
+
       function PMT(ir, np, pv, fv, type) {
         /*
         * ir   - interest rate per month
@@ -50,8 +67,8 @@
       }
       function solve() {
 
-        $('#test').html('<tr><th>Meses</th><th>Pago Mensual</th><th>Comisión de Apertura</th><th>Monto Neto Depositado</th><th>Total Pagado</th><th>Intereses Pagados</th><th>CAT</th></tr>')
-        const lending = Number(document.getElementById("amount").value)//Number(document.getElementById("amount").value) //MONTO DEL PRESTAMO
+        $('#test').html('<tr><th>Meses</th><th>Mensualidad</th><th>Comisión</th><th>IVA Comisión</th><th>Interés</th><th>IVA Interés</th><th>TOTAL</th></tr>')
+        let lending = Number(document.getElementById("amount").value)//Number(document.getElementById("amount").value) //MONTO DEL PRESTAMO
         const TIO = (Number(document.getElementById("TIO").value))/100//Number(document.getElementById("TIO").value) //TASA DE INT ORDINARIO
         const TIVA = 0.16 //TASA IVA
         const commission = 0.001 //COMISIÓN PLATAFORMO
@@ -90,16 +107,17 @@
             const h5 = $('<td/>')
             const h6 = $('<td/>')
             const h7 = $('<td/>')
-            h2.html(mensualidad.toLocaleString(undefined, {maximumFractionDigits: 0}))
-            let comisionApertura = platformCommission*i
-            h3.html(comisionApertura.toLocaleString()) //pendiente
-            let montoNeto = lending-platformCommission*i
-            h4.html(montoNeto.toLocaleString())
-            let totalPagado = mensualidad.toFixed()*i
-            h5.html(totalPagado.toLocaleString())
-            let interesPagado = totalPagado - lending
-            h6.html(interesPagado.toLocaleString())
-            h7.html('?')
+            h2.html(mensualidad.toLocaleString(undefined, {maximumFractionDigits: 2}))
+            let comision = platformCommission*i
+            h3.html(comision.toLocaleString())
+            let IVAComision = comision * 0.16
+            h4.html(IVAComision.toLocaleString())
+            let interesMonto = lending * (TIO/100) * i
+            h5.html(interesMonto.toLocaleString())
+            let IVAInteres = interesMonto * 0.16
+            h6.html(IVAInteres.toLocaleString())
+            let total = mensualidad*i + comision + IVAComision + interesMonto + IVAInteres
+            h7.html(total.toLocaleString())
             btn.append(h1)
             btn.append(h2)
             btn.append(h3)
