@@ -27,9 +27,8 @@
     </style>
   </head>
   <body>
-    <div style="display:  flex; flex-wrap:  wrap;">
-      <div style="display:  flex; flex-direction:  column;" class="cred-c-table--prestamo">
-        <div style="width: 100%;">
+    <div style="display:  flex; justify-content: space-around; width: 100%;">
+      <div style="width: 50%;">
           <div style="display:  flex; flex-direction:  row;">
             <h4 style="width: 50%; margin: auto;">INGRESA CANTIDAD</h4>
             <input type="number" id="amount" min="500" max="250000" required value="500" style="width: 50%;font-size: 24px;text-align: center;">
@@ -39,16 +38,22 @@
           <input type="button" name="" value="Simular" onclick="solve()" style="margin: 32px 0px 32px 0; width: 100%; font-size: 24px;text-align: center;">
           <span id="gananciaM"></span>
         </div>
-      </div>
-      <div class="cred-c-table--prestamo">
+    </div>
+    <div style="display:  flex; flex-wrap:  wrap;">
+      <div class="cred-c-table--prestamo" style="padding-right: 32px;">
           <h4 style="margin: 0px;"><table id='test' style="text-align: right; width: 100%; margin-left: 32px">
           </table><h4>
+      </div>
+      <div style="display:  flex; flex-direction:  column;" class="cred-c-table--prestamo">
+        <div id="chart_div"></div>
       </div>
     </div>
     <script>
       function solve() {
         let amount = Number(document.getElementById("amount").value)
+        let array = []
         if (amount < 500 || amount > 250000) {
+          $('#chart_div').html('')
           $('#gananciaM').html('')
           $('#test').html('')
         } else {
@@ -68,12 +73,44 @@
             btn.append(h2)
             h2.html(i)
 
+            if(i%6 == 0) {
+              array.push([i.toString(),amount])
+            }
+
             $('#test').append(btn);
+            //-----------------------------------
+            // Load the Visualization API and the corechart package.
+            google.charts.load('current', {'packages':['corechart']});
+
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(drawChart);
+
+            // Callback that creates and populates a data table,
+            // instantiates the pie chart, passes in the data and
+            // draws it.
+            function drawChart() {
+
+              // Create the data table.
+              var data = new google.visualization.DataTable();
+              data.addColumn('string', 'Meses');
+              data.addColumn('number',);
+
+              data.addRows(array);
+
+              // Set chart options
+              var options = {colors: ['#33cc66']};
+
+              // Instantiate and draw our chart, passing in some options.
+              var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+              chart.draw(data, options);
+            }
+            //-----------------------------------
             i+=5
           }
         }
       }
     </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"
       integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
