@@ -6,34 +6,34 @@
     <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
   </head>
   <body>
-    <div style="display: flex; justify-content: center;">
-      <div style="display: flex; flex-direction: column; width: 400px;">
+    <div style="display: flex; justify-content: space-around;">
+      <div style="display: flex; flex-direction: column; width: 50%;">
         <div style="width: 100%;">
-          <input type="range" min="5000" max="250000" step="1000" id="amount" value="5000" style="width: 100%;font-size: 24px;text-align: center;" onchange="updateTextInput(this.value);">
-          <div style="display: flex;">
-            <h4 style="width: 50%; margin: 0;">Monto deseado</h4>
-            <h4 style="width: 50%; margin: 0;">
-              <output type="text" id="textInput" value="">5000</output>
-            </h4>
+          <div style="">
+            <h4 style="margin: 0;">Monto deseado $ <output type="number" id="textInput" value="5000">5,000</output></h4>
+            <input type="range" min="5000" max="250000" step="1000" id="amount" value="5000" style="font-size: 24px;text-align: center; width: 100%;" onchange="updateTextInput(this.value);">
           </div>
-          <input type="range" min="8.9" max="28.9" step="0.2" id="TIO" value="13.5" style="width: 100%;font-size: 24px;text-align: center;" onchange="updateTextInputTasa(this.value);">
-          <div style="display: flex;">
-              <h4 style="width: 50%; margin: 0;">Tasa de interés</h4>
-              <h4 style="width: 50%; margin: 0;">
-                <output type="text" id="textInputTasa" value="">13.5</output>
-              </h4>
+          <div style="margin-top: 32px;">
+            <h4 style="margin: 0;">Tasa de interés <output type="text" id="textInputTasa" value="">13.5</output>%</h4>
+            <div>
+              <input type="range" min="8.9" max="28.9" step="0.2" id="TIO" value="13.5" style="width: 100%;font-size: 24px;text-align: center;" onchange="updateTextInputTasa(this.value);">
+            </div>
           </div>
           <input id="button"type="button" name="" value="Simular" onclick="solve()" style="margin-top: 32px; width: 100%; font-size: 24px;text-align: center;">
         </div>
       </div>
     </div>
-    <div>
-      <table id='test' style="text-align: right; margin-top: 32px">
-      </table>
+    <div style="width: 100%;">
+      <h4>
+        <table id='test' style="text-align: right; margin-top: 32px; width: 100%;">
+        </table>
+      </h4>
     </div>
     <script type="text/javascript">
       function updateTextInput(val) {
-          document.getElementById('textInput').value=val;
+        val = parseInt(val)
+        console.log(val)
+          document.getElementById('textInput').value=val.toLocaleString();
         }
       function updateTextInputTasa(val) {
           document.getElementById('textInputTasa').value=val;
@@ -112,11 +112,11 @@
             h3.html(comision.toLocaleString())
             let IVAComision = comision * 0.16
             h4.html(IVAComision.toLocaleString())
-            let interesMonto = lending * (TIO/100) * i
+            let interesMonto = lending * ((TIO)/12) * i
             h5.html(interesMonto.toLocaleString())
             let IVAInteres = interesMonto * 0.16
             h6.html(IVAInteres.toLocaleString())
-            let total = mensualidad*i + comision + IVAComision + interesMonto + IVAInteres
+            let total = lending + comision + IVAComision + interesMonto + IVAInteres
             h7.html(total.toLocaleString())
             btn.append(h1)
             btn.append(h2)
